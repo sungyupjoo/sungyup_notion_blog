@@ -9,8 +9,10 @@ interface fetchEachPagesProps {
     pageId: string;
   };
 }
+
 const fetchEachPages = async ({ params }: fetchEachPagesProps) => {
   const { pageId } = await params;
+
   try {
     const recordMap = await notion.getPage(pageId);
     return <NotionPage recordMap={recordMap} />;

@@ -38,6 +38,7 @@ const NotionPage = ({ recordMap }: { recordMap: ExtendedRecordMap }) => {
       <NotionRenderer
         recordMap={recordMap}
         fullPage={true}
+        showTableOfContents={true}
         components={{
           Code,
           Collection,
