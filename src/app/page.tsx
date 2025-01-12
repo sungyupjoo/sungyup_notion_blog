@@ -8,7 +8,7 @@ export const notion = new NotionAPI({
 export default async function Home() {
   if (process.env.NOTION_PAGE_ID) {
     const recordMap = await notion.getPage(process.env.NOTION_PAGE_ID);
-    console.log(recordMap.collection);
+
     return (
       <main>
         <NotionPage recordMap={recordMap} />

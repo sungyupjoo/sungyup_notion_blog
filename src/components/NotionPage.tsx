@@ -1,53 +1,27 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import React from 'react';
-import Link from 'next/link';
 import { ExtendedRecordMap } from 'notion-types';
-import 'react-notion-x/src/styles.css';
-import { NotionRenderer } from 'react-notion-x';
+import RenderBlock from './RenderBlock';
 
 const NotionPage = ({ recordMap }: { recordMap: ExtendedRecordMap }) => {
-  const Code = dynamic(
-    () =>
-      import('react-notion-x/build/third-party/code').then((mod) => mod.Code),
-    { ssr: false }
-  );
-  const Collection = dynamic(
-    () =>
-      import('react-notion-x/build/third-party/collection').then(
-        (mod) => mod.Collection
-      ),
-    { ssr: false }
-  );
-  const Equation = dynamic(
-    () =>
-      import('react-notion-x/build/third-party/equation').then(
-        (mod) => mod.Equation
-      ),
-    { ssr: false }
-  );
-  const Modal = dynamic(
-    () =>
-      import('react-notion-x/build/third-party/modal').then((mod) => mod.Modal),
-    { ssr: false }
-  );
+  const blockIds = Object.keys(recordMap.block);
   return (
     <div>
-      <NotionRenderer
-        recordMap={recordMap}
-        fullPage={true}
-        showTableOfContents={true}
-        components={{
-          Code,
-          Collection,
-          Equation,
-          Modal,
-          nextImage: Image,
-          nextLink: Link,
-        }}
-      />
+      {blockIds.map((blockId) => (
+        <RenderBlock key={blockId} blockId={blockId} recordMap={recordMap} />
+      ))}
+      {/* <pre style={{ padding: 20, overflow: 'auto' }}>
+        {JSON.stringify(
+          Object.entries(recordMap.block).map(([id, block]) => ({
+            id,
+            type: block.value.type,
+            properties: block.value.properties,
+          })),
+          null,
+          2
+        )}
+      </pre> */}
     </div>
   );
 };
