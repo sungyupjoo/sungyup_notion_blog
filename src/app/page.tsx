@@ -1,18 +1,15 @@
-import NotionPage from '@/components/NotionPage';
-import { NotionAPI } from 'notion-client';
-
-export const notion = new NotionAPI({
-  authToken: process.env.NOTION_TOKEN_V2,
-});
+import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { fetchPages } from '@/lib/notion';
 
 export default async function Home() {
-  if (process.env.NOTION_PAGE_ID) {
-    const recordMap = await notion.getPage(process.env.NOTION_PAGE_ID);
-
-    return (
-      <main>
-        <NotionPage recordMap={recordMap} />
-      </main>
-    );
-  } else return <div>No page id</div>;
+  const posts = await fetchPages();
+  return (
+    <main>
+      {posts.results.map((post) => (
+        <div key={post.id}>
+          {(post as PageObjectResponse).properties.이름.title[0].plain_text}
+        </div>
+      ))}
+    </main>
+  );
 }
